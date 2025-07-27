@@ -4,6 +4,7 @@
     font-size: 18px;
     justify-content: center;
     width: 110vh;
+    background-color: #f9f9f9;
 }
 
 .afstar{
@@ -40,6 +41,9 @@
 
 .form-group .RecurringDonation {
     display: inline-block;
+}
+.form-group input{
+
 }
 
 #checkboxes{
