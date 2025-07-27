@@ -1,0 +1,17 @@
+.container{
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+
+}
+.form-group label{
+    flex-basis: 100px;
+    margin-right: 10px;
+    text-align: right;
+}
