@@ -92,7 +92,7 @@
                 <input type="text"  id="name">
             </div>
             <div class="form-group">
-                <label for="RecuringDonation">Recuring Donation</label>
+                <label for="RecuringDonation" class="RecurringDonation">Recuring Donation</label>
                 <input type="checkbox"  id="name">
                 <p>I am interested in giving on a regular basis.</p>
             </div>
@@ -108,7 +108,7 @@
             </div class="form-group">
                 <label for="honor">I would like to make this donation</label>
                 <input type="radio"  id="honor"> To Honor <br>
-                <input type="radio"  id="honor"> In memory of <br>
+                <input type="radio"  id="honor" class="pp1"> In memory of <br>
             </div>
 
             <div class="form-group">
@@ -150,7 +150,7 @@
                 <input type="text"  id="name">
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="checkboxes">
                 <input type="checkbox"  id="checkbox">I would like my gift to remain anonymous. <br>
                 <input type="checkbox"  id="checkbox">My employer offers a matching gift program.I will mail the matching gift form <br>
                 <input type="checkbox"  id="checkbox">Please save the cost of acknowledging this gift by not mailing thank you later<br>
@@ -158,32 +158,30 @@
             </div>
             <div class="form-group">
                 <label for="comments">Comments</label> <br>
-                <p>(Please type any questions or feedback here)</p>
-                <input type="text"  id="name">
+                <span> <br>(Please type any questions or feedback here)</span>
+                <input type="text"  id="name" class="comments">
             </div>
-             <div class="form-group">
+             <div class="form-group" id="checkboxes">
                 <label for="contact">How may we contact you?</label>
                 <input type="checkbox"  id="name">Email <br>
-                <input type="checkbox"  id="name">Postal Mail<br>
-                <input type="checkbox"  id="name">Telephone<br>
-                <input type="checkbox"  id="name">Fax<br>
-                <p>I would like to receive newslatters and Information about special events by:</p><br>
-                <input type="checkbox"  id="name">Email <br>
-                <input type="checkbox"  id="name">Postal Mail<br>  
+                <input type="checkbox"  id="name" class="pp">Postal Mail<br>
+                <input type="checkbox"  id="name" class="pp">Telephone<br>
+                <input type="checkbox"  id="name" class="pp">Fax<br>
+                <p>I would like to receive newslatters and Information about special events by:</p>
+                <input type="checkbox"  id="name" class="pp">Email <br>
+                <input type="checkbox"  id="name" class="pp">Postal Mail<br>  
             </div>
             <div class="form-group">
                 
                 <input type="checkbox"  id="name">I would like Information about volunteering with the <br>
-                <input type="submit"value="Reset" class="submit-button">
-                <input type="submit"value="Continue" class="submit-button">
 
             </div>
-
+            <div class="button">
+                <input type="submit"value="Reset" class="submit-button">
+                <input type="submit"value="Continue" class="submit-button">
+            </div>
         </form>
-        <div class="lastConclu">
-            <p>Donate online with confidence. You are on a secure server</p>
-            <p>If you may have any problem or questions, please contact <p class="support">support</p></p>
-        </div>
+
 
     </div>
 

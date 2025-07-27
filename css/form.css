@@ -1,6 +1,9 @@
 .container{
     margin: 0 auto;
     padding: 15px;
+    font-size: 18px;
+    justify-content: center;
+    width: 110vh;
 }
 
 .afstar{
@@ -25,7 +28,7 @@
 
 }
 .form-group label{
-    flex-basis: 100px;
+    flex-basis: 180px;
     font-weight: bold;
     margin-right: 10px;
     text-align: right;
@@ -35,3 +38,45 @@
     color: red;
 }
 
+.form-group .RecurringDonation {
+    display: inline-block;
+}
+
+#checkboxes{
+    display: block;
+}
+.form-group span{
+    font-size: 16px;
+    color: #555;
+    text-align: left;
+}
+.form-group .comments{
+    width: 400px;
+    height: 100px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+
+}
+.pp{
+    margin-left: 220px;
+    font-size: 16px;
+} 
+.pp1{
+    margin-left: 256px;
+    margin-bottom: 15px;
+
+}
+.button{
+    display: flex;
+    margin-left: 200px;
+    margin-top: 20px;
+    gap: 20px;
+}
+.button input{
+    height: 40px;
+    width: 100px;
+    border-radius: 30px;
+    font-size: 15px;
+}
