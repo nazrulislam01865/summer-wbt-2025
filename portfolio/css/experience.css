@@ -85,6 +85,15 @@ body{
 
 
 }
+
+.zoomImg{
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+.zoomImg:hover{
+    transform: scale(1.1);
+}
 .EduPara{
     width: 850px;
     padding: 10px;

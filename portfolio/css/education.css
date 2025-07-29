@@ -95,6 +95,15 @@ body{
     text-align: justify;
     line-height: 1.1;
 }
+.zoomImg{
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+.zoomImg:hover{
+    transform: scale(1.1);
+}
+
 .sidebar{
     border-right: 2px solid #81c5eb;
     height: 300px;

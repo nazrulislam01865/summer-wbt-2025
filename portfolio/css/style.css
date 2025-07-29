@@ -76,6 +76,14 @@ body{
     text-align: justify;
 
 }
+.zoomImg{
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+.zoomImg:hover{
+    transform: scale(1.1);
+}
 .btn{
     text-decoration: none;
     font-size: 24px;
