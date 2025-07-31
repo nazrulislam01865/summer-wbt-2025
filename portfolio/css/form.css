@@ -47,11 +47,94 @@ body{
     padding: 5px;
 }
 
-.form{
+.form {
     width: 80vh;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border-radius: 20px;
     margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.fullwidth {
+    align-items: center;
+    text-align: center;
+}
+.formpart{
+    display: flex;
+    padding: 20px;
+    text-align: right;
+    justify-content: center;
+    gap: 20px;
+    font-size: 20px;
+    margin: auto;
+}
+.contact-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.formpart label{
+    font-weight: bold;
+    color: #000000;
+    flex-basis: 180px;
+    margin-top: 5px;
+}
+.formpart input{
+    width: 40%;
+    height: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+#reason{
+    width: 42%;
+    height: 35px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+.formpart p{
+    color: #000000;
+    font-weight: bold;
+    margin-top: 10px;
+    display: inline;
+}
+
+.radio-group {
+    display: flex;
+    gap: 30px; 
+    align-items: center;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap; 
+    font-size: 18px;
+    font-weight: normal;
+}
+
+.submitbtn{
+    width: 150px;
+    height: 40px;
+    background-color: transparent;
+    border: 1px solid #81c5eb;
+    border-radius: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+.submitbtn:hover{
+    background-color: #81c5eb;
+    color: #ffffff;
+    transition: 0.5s;
 }
 
 .footer{
