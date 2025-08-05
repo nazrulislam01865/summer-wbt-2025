@@ -50,6 +50,12 @@ body{
     font-size: 30px;
     padding: 10px;
 }
+#active{
+    background-color: #81c5eb;
+    color: #ffffff;
+    border-radius: 10px;
+
+}
 
 .education{
     justify-content: center;

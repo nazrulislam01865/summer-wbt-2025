@@ -46,6 +46,17 @@ body{
     font-weight: 500;
     padding: 5px;
 }
+.headerName h2{ 
+    font-size: 30px;
+    padding: 10px;
+}
+#active{
+    background-color: #81c5eb;
+    color: #ffffff;
+    border-radius: 10px;
+
+}
+
 
 .form {
     width: 80vh;
