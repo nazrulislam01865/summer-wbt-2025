@@ -63,16 +63,14 @@ function getUserServiceChoice(){
         alert('You did not provided your position');
     }
 
-    console.log("User input received:\n");
+    console.log("User inputs:\n");
     console.log("Reason for contact: " + ReasonForContact);
     console.log("Service choice: " + serviceChoice);
     console.log("Position of job provider: " + positionOfJobProvider);
-    alert("Thank you for your input!");
-    return {
-        reason: ReasonForContact,
-        service: serviceChoice,
-        position: positionOfJobProvider
-    };
+    alert("Thank you for your input. We will get back to you soon!\n "+"Reason for contact: " + ReasonForContact + "\n" +
+          "Service choice: " + serviceChoice + "\n" +
+          "Position of job provider: " + positionOfJobProvider);
+
 
 
 }
