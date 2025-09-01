@@ -193,57 +193,40 @@
 
 
 <?php
-// Start session for CSRF protection and form persistence
 session_start();
 
-// Generate CSRF token if not exists
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-// Form validation and processing
 $errors = [];
 $success = false;
 $form_data = $_POST ?: [];
 
-// List of Bangladesh divisions for validation
-$divisions = [
-    'DHK' => 'Dhaka',
-    'CTG' => 'Chattogram',
-    'RAJ' => 'Rajshahi',
-    'KHU' => 'Khulna',
-    'BAR' => 'Barisal',
-    'SYL' => 'Sylhet',
-    'RNG' => 'Rangpur',
-    'MYM' => 'Mymensingh'
+$states = [
+    'AL' => 'Alabama', 'AK' => 'Alaska', 'AZ' => 'Arizona', 'AR' => 'Arkansas', 
+    'CA' => 'California', 'CO' => 'Colorado', 'CT' => 'Connecticut', 'DE' => 'Delaware',
+    'FL' => 'Florida', 'GA' => 'Georgia', 'HI' => 'Hawaii', 'ID' => 'Idaho',
+
 ];
 
-// List of countries for validation (prioritizing Bangladesh)
-$countries = [
-    'BD' => 'Bangladesh',
-    'IN' => 'India',
-    'US' => 'United States',
-    'CA' => 'Canada',
-    'UK' => 'United Kingdom'
-];
+$countries = ['US' => 'United States', 'CA' => 'Canada', 'UK' => 'United Kingdom'];
 
-// Form processing
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Verify CSRF token
+
     if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
         $errors[] = "Invalid CSRF token";
     } else {
-        // Required fields validation
         $required_fields = [
-            'first_name' => 'First Name',
-            'last_name' => 'Last Name',
-            'address1' => 'Address 1',
-            'city' => 'City',
-            'division' => 'Division',
-            'zipcode' => 'Postal Code',
-            'country' => 'Country',
-            'email' => 'Email',
-            'donation_amount' => 'Donation Amount'
+                'first_name' => 'First Name',
+                'last_name' => 'Last Name',
+                'address1' => 'Address 1',
+                'city' => 'City',
+                'state' => 'State',
+                'zipcode' => 'Zip Code',
+                'country' => 'Country',
+                'email' => 'Email',
+                'donation_amount' => 'Donation Amount'
         ];
 
         foreach ($required_fields as $field => $label) {
@@ -252,29 +235,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        // Email validation
         if (!empty($_POST['email']) && !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
             $errors[] = "Invalid email format";
         }
 
-        // Postal code validation (Bangladesh format: 4 digits)
-        if (!empty($_POST['zipcode']) && !preg_match('/^\d{4}$/', $_POST['zipcode'])) {
-            $errors[] = "Invalid postal code format (must be 4 digits)";
+        if (!empty($_POST['zipcode']) && !preg_match('/^\d{5}(-\d{4})?$/', $_POST['zipcode'])) {
+            $errors[] = "Invalid zip code format";
         }
 
-        // Phone validation (if provided, Bangladesh format: +880 followed by 10 digits)
-        if (!empty($_POST['phone']) && !preg_match('/^\+880\d{10}$/', $_POST['phone'])) {
-            $errors[] = "Invalid phone number format (e.g., +8801XXXXXXXXX)";
+        if (!empty($_POST['phone']) && !preg_match('/^\+?\d{10,15}$/', $_POST['phone'])) {
+            $errors[] = "Invalid phone number format";
         }
 
-        // Donation amount validation
         if (!empty($_POST['donation_amount']) && $_POST['donation_amount'] === 'other') {
             if (empty($_POST['other_amount']) || !is_numeric($_POST['other_amount']) || $_POST['other_amount'] <= 0) {
                 $errors[] = "Please enter a valid donation amount";
             }
         }
 
-        // Recurring donation validation
         if (!empty($_POST['recurring_donation']) && (!empty($_POST['monthly_amount']) || !empty($_POST['months']))) {
             if (!is_numeric($_POST['monthly_amount']) || $_POST['monthly_amount'] <= 0) {
                 $errors[] = "Invalid monthly amount";
@@ -284,21 +262,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        // Division validation
-        if (!empty($_POST['division']) && !array_key_exists($_POST['division'], $divisions)) {
-            $errors[] = "Invalid division selected";
+        if (!empty($_POST['state']) && !array_key_exists($_POST['state'], $states)) {
+            $errors[] = "Invalid state selected";
         }
 
-        // Country validation
         if (!empty($_POST['country']) && !array_key_exists($_POST['country'], $countries)) {
             $errors[] = "Invalid country selected";
         }
 
-        // If no errors, process the form (e.g., save to database, redirect, etc.)
         if (empty($errors)) {
             $success = true;
-            // Here you would typically save to database or process the donation
-            // For demo, we'll just redirect to a thank you page
             header("Location: thank_you.php");
             exit;
         }
@@ -312,7 +285,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/form.css">
-    <title>Donation Form - Bangladesh</title>
+    <title>Donation Form</title>
     <style>
         .error { color: red; font-size: 0.9em; }
         .success { color: green; font-size: 0.9em; }
@@ -359,7 +332,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="form-group">
-                <label for="company">Company/Organization</label>
+                <label for="company">Company</label>
                 <input type="text" id="company" name="company" value="<?php echo isset($form_data['company']) ? htmlspecialchars($form_data['company']) : ''; ?>">
             </div>
 
@@ -379,11 +352,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="form-group">
-                <label for="division">Division <sup>*</sup></label>
-                <select id="division" name="division">
-                    <option value="">Select a division</option>
-                    <?php foreach ($divisions as $code => $name): ?>
-                        <option value="<?php echo $code; ?>" <?php echo isset($form_data['division']) && $form_data['division'] === $code ? 'selected' : ''; ?>>
+                <label for="state">State <sup>*</sup></label>
+                <select id="state" name="state">
+                    <option value="">Select a state</option>
+                    <?php foreach ($states as $code => $name): ?>
+                        <option value="<?php echo $code; ?>" <?php echo isset($form_data['state']) && $form_data['state'] === $code ? 'selected' : ''; ?>>
                             <?php echo htmlspecialchars($name); ?>
                         </option>
                     <?php endforeach; ?>
@@ -391,7 +364,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="form-group">
-                <label for="zipcode">Postal Code <sup>*</sup></label>
+                <label for="zipcode">Zip Code <sup>*</sup></label>
                 <input type="text" id="zipcode" name="zipcode" value="<?php echo isset($form_data['zipcode']) ? htmlspecialchars($form_data['zipcode']) : ''; ?>">
             </div>
 
@@ -409,7 +382,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="form-group">
                 <label for="phone">Phone</label>
-                <input type="text" id="phone" name="phone" value="<?php echo isset($form_data['phone']) ? htmlspecialchars($form_data['phone']) : ''; ?>" placeholder="+8801XXXXXXXXX">
+                <input type="text" id="phone" name="phone" value="<?php echo isset($form_data['phone']) ? htmlspecialchars($form_data['phone']) : ''; ?>">
             </div>
 
             <div class="form-group">
@@ -423,18 +396,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="form-group">
-                <label>Donation Amount (BDT) <sup>*</sup></label>
+                <label>Donation Amount <sup>*</sup></label>
                 <input type="radio" id="none" name="donation_amount" value="none" <?php echo isset($form_data['donation_amount']) && $form_data['donation_amount'] === 'none' ? 'checked' : ''; ?>> None
-                <input type="radio" id="500" name="donation_amount" value="500" <?php echo isset($form_data['donation_amount']) && $form_data['donation_amount'] === '500' ? 'checked' : ''; ?>> ৳500
-                <input type="radio" id="1000" name="donation_amount" value="1000" <?php echo isset($form_data['donation_amount']) && $form_data['donation_amount'] === '1000' ? 'checked' : ''; ?>> ৳1000
-                <input type="radio" id="2000" name="donation_amount" value="2000" <?php echo isset($form_data['donation_amount']) && $form_data['donation_amount'] === '2000' ? 'checked' : ''; ?>> ৳2000
-                <input type="radio" id="5000" name="donation_amount" value="5000" <?php echo isset($form_data['donation_amount']) && $form_data['donation_amount'] === '5000' ? 'checked' : ''; ?>> ৳5000
+                <input type="radio" id="50" name="donation_amount" value="50" <?php echo isset($form_data['donation_amount']) && $form_data['donation_amount'] === '50' ? 'checked' : ''; ?>> $50
+                <input type="radio" id="75" name="donation_amount" value="75" <?php echo isset($form_data['donation_amount']) && $form_data['donation_amount'] === '75' ? 'checked' : ''; ?>> $75
+                <input type="radio" id="100" name="donation_amount" value="100" <?php echo isset($form_data['donation_amount']) && $form_data['donation_amount'] === '100' ? 'checked' : ''; ?>> $100
+                <input type="radio" id="250" name="donation_amount" value="250" <?php echo isset($form_data['donation_amount']) && $form_data['donation_amount'] === '250' ? 'checked' : ''; ?>> $250
                 <input type="radio" id="other" name="donation_amount" value="other" <?php echo isset($form_data['donation_amount']) && $form_data['donation_amount'] === 'other' ? 'checked' : ''; ?>> Other
             </div>
 
             <div class="form-group">
                 <p>(Check a button or type in your amount)</p>
-                <label for="other_amount">Other Amount ৳</label>
+                <label for="other_amount">Other Amount $</label>
                 <input type="text" id="other_amount" name="other_amount" value="<?php echo isset($form_data['other_amount']) ? htmlspecialchars($form_data['other_amount']) : ''; ?>">
             </div>
 
@@ -446,7 +419,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="form-group">
                 <p>(Check if yes)</p>
-                <label for="monthly_amount">Monthly Credit Card ৳</label>
+                <label for="monthly_amount">Monthly Credit Card $</label>
                 <input type="text" id="monthly_amount" name="monthly_amount" value="<?php echo isset($form_data['monthly_amount']) ? htmlspecialchars($form_data['monthly_amount']) : ''; ?>">
                 For
                 <input type="text" id="months" name="months" value="<?php echo isset($form_data['months']) ? htmlspecialchars($form_data['months']) : ''; ?>"> Months
@@ -481,11 +454,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="form-group">
-                <label for="acknowledge_division">Division</label>
-                <select id="acknowledge_division" name="acknowledge_division">
-                    <option value="">Select a division</option>
-                    <?php foreach ($divisions as $code => $name): ?>
-                        <option value="<?php echo $code; ?>" <?php echo isset($form_data['acknowledge_division']) && $form_data['acknowledge_division'] === $code ? 'selected' : ''; ?>>
+                <label for="acknowledge_state">State</label>
+                <select id="acknowledge_state" name="acknowledge_state">
+                    <option value="">Select a state</option>
+                    <?php foreach ($states as $code => $name): ?>
+                        <option value="<?php echo $code; ?>" <?php echo isset($form_data['acknowledge_state']) && $form_data['acknowledge_state'] === $code ? 'selected' : ''; ?>>
                             <?php echo htmlspecialchars($name); ?>
                         </option>
                     <?php endforeach; ?>
@@ -493,7 +466,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="form-group">
-                <label for="acknowledge_zip">Postal Code</label>
+                <label for="acknowledge_zip">Zip</label>
                 <input type="text" id="acknowledge_zip" name="acknowledge_zip" value="<?php echo isset($form_data['acknowledge_zip']) ? htmlspecialchars($form_data['acknowledge_zip']) : ''; ?>">
             </div>
 
@@ -508,7 +481,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="form-group" id="checkboxes">
                 <input type="checkbox" id="anonymous" name="anonymous" <?php echo isset($form_data['anonymous']) ? 'checked' : ''; ?>> I would like my gift to remain anonymous.<br>
                 <input type="checkbox" id="matching_gift" name="matching_gift" <?php echo isset($form_data['matching_gift']) ? 'checked' : ''; ?>> My employer offers a matching gift program. I will mail the matching gift form.<br>
-                <input type="checkbox" id="no_thank_you" name="no_thank_you" <?php echo isset($form_data['no_thank_you']) ? 'checked' : ''; ?>> Please save the cost of acknowledging this gift by not mailing thank you letter.<br>
+                <input type="checkbox" id="no_thank_you" name="no_thank_you" <?php echo isset($form_data['no_thank_you']) ? 'checked' : ''; ?>> Please save the cost ofacknowledging this gift by not mailing thank you letter.<br>
             </div>
 
             <div class="form-group">
