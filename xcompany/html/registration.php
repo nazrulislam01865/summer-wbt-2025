@@ -132,7 +132,7 @@
                 <input type="password" id="confirm_password" name="confirm_password" value="<?php echo $confirmPassword; ?>">
                 <span class="error"><?php echo $confirmPasswordErr; ?></span>
             </div>
-            <div class="form-group radiobtn">
+            <div class="form-group ">
                 <label>Gender</label>
                 <input class="radio" type="radio" name="gender" value="Male" <?php if ($gender == "Male") echo "checked"; ?>> Male
                 <input class="radio" type="radio" name="gender" value="Female" <?php if ($gender == "Female") echo "checked"; ?>> Female

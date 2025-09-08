@@ -41,7 +41,7 @@ body {
     text-align: center;
     margin: 10px 0;
     min-height: 500px;
-    width: 400px;
+    width: 600px;
     margin-left: auto;
     margin-right: auto;
     justify-content: center;
@@ -60,15 +60,17 @@ body {
 }
 .form-group {
     margin-bottom: 10px;
+    display: flex;
     text-align: left;
 }
 .form-group label {
     display: inline-block;
-    width: 180px;
+    width: 170px;
 }
 .form-group input, .form-group select {
     width: 200px;
 }
+
 .error {
     color: red;
     font-size: 12px;
@@ -76,7 +78,6 @@ body {
 .footer {
     text-align: center;
     padding: 10px;
-
     margin-top: 10px;
 }
 .form-group-btn {
